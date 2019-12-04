@@ -3,16 +3,25 @@ package blackFriday;
 public class Articulo {
 	private String nombre;
 	private double precio;
-	private int rebaja;
+	private double rebaja;
 	private int cantidadDisponible;
 	private int cantidadDisponibleConRebaja;
 
-	public Articulo(String nombre, double precio, int rebaja, int cantidadDisponible, int cantidadDisponibleConRebaja) {
+	public Articulo(String nombre, double precio, double rebaja, int cantidadDisponible,
+			int cantidadDisponibleConRebaja) {
 		this.nombre = nombre;
-		this.precio = precio - (precio*rebaja/100);
+		this.precio = precio;
 		this.rebaja = rebaja;
 		this.cantidadDisponible = cantidadDisponible;
 		this.cantidadDisponibleConRebaja = cantidadDisponibleConRebaja;
+	}
+
+	public boolean estaEnDescuento() {
+		if (cantidadDisponibleConRebaja == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public String getNombre() {
@@ -24,6 +33,9 @@ public class Articulo {
 	}
 
 	public double getPrecio() {
+		if (cantidadDisponibleConRebaja > 0) {
+			precio = precio - (precio * rebaja / 100);
+		}
 		return precio;
 	}
 
@@ -31,7 +43,7 @@ public class Articulo {
 		this.precio = precio;
 	}
 
-	public int getRebaja() {
+	public double getRebaja() {
 		return rebaja;
 	}
 
@@ -46,6 +58,16 @@ public class Articulo {
 	public void setCantidadDisponible(int cantidadDisponible) {
 		this.cantidadDisponible = cantidadDisponible;
 	}
+	
+	public void añadirCantidadDisponible(int unidadesAlmacenadas, boolean tipoUnidad) {
+		if (tipoUnidad) {
+			cantidadDisponible += unidadesAlmacenadas;
+			cantidadDisponibleConRebaja += unidadesAlmacenadas;
+		}
+		if (!tipoUnidad) {
+			cantidadDisponible += unidadesAlmacenadas;
+		}
+	}
 
 	public int getCantidadDisponibleConRebaja() {
 		return cantidadDisponibleConRebaja;
@@ -54,8 +76,13 @@ public class Articulo {
 	public void setCantidadDisponibleConRebaja(int cantidadDisponibleConRebaja) {
 		this.cantidadDisponibleConRebaja = cantidadDisponibleConRebaja;
 	}
+
+	@Override
+	public String toString() {
+		return "Nombre = " + nombre + "\nPrecio = " + precio + "\nRebaja = " + rebaja + "\nPrecio con rebaja = " + (precio-(precio*rebaja/100)) + "\nCantidad disponible = "
+				+ cantidadDisponible + "\nCantidad disponible con rebaja = " + cantidadDisponibleConRebaja + "\n\n\n";
+	}
 	
 	
-	
-	
+
 }
